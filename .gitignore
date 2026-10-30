@@ -1,0 +1,35 @@
+# R / RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+.Rapp.history
+*_cache/
+*_files/
+
+# renv: commit renv.lock, .Rprofile and renv/activate.R, not the installed library
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
+
+# Credentials: never commit
+.Renviron
+*.keyring
+.env
+
+# Large or re-downloadable raw data (the small HDF5 file IS committed)
+data/raw/
+data/raw_appeears/
+
+# Python (not used here, but keep out if present)
+.venv/
+__pycache__/
+
+# OS
+.DS_Store
+Thumbs.db
