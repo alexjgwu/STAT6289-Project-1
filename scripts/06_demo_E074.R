@@ -6,6 +6,7 @@ dir.create("figures", showWarnings = FALSE)
 
 # 1. What is in the file?
 print(dc_list(H5), n = Inf)
+print(dc_sources(H5), width = Inf)
 print(dc_describe(H5, "gridded/daymet/prcp"), n = Inf, width = Inf)
 print(dc_station_info(H5), width = Inf)
 

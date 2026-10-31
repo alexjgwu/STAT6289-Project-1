@@ -39,7 +39,7 @@ Event times are fixed EST (UTC-5), as stated in the assignment, with no daylight
 
 1.  **Event validation** (`01_validate_events.R`). Assigns IDs E001 to E125, parses times, flags zero-duration events (1), midnight crossings (24), overlaps (2) and placeholder end times of 23:59 or 00:00 (4). Lists the 372 calendar dates needed (event days plus a one-day buffer).
 2.  **Daymet retrieval.** The first plan (pulling data from ORNL THREDDS/NCSS through the `daymetr` package) failed for all 28 years; the log is kept in `data/derived/daymet_download_log.csv`. The code for retrieval using `daymetr` was saved in `02_fail_thredds_attempt`. The data were retrieved from AppEEARS instead, one task per year, native projection (no resampling), GeoTIFF. All 372 relevant dates were retrieved.
-3.  **Station search and retrieval** (`04a`, `04a2`, `04b`). Catalog search found 70 GHCN-Daily candidates; five were selected. Each station's location was classified as in DC or out against the Census outline.
+3.  **Station search and retrieval** (`04a`, `04a2`, `04b`). Catalog search found 70 GHCN-Daily candidates; five were selected. Each station's location was classified as in DC or out against the Census outline. Station values were requested in metric units from the NCEI service (`units=metric`), so they arrive in mm; no conversion was applied by this project. Daymet is stored in its native mm/day with no unit conversion, reprojection or resampling.
 4.  **HDF5 build** (`03`, `05`, `05b`).
 
 ## HDF5 structure
@@ -59,6 +59,8 @@ Event times are fixed EST (UTC-5), as stated in the assignment, with no daylight
                               availability_by_event_station
 /context/dc_boundary          DC outline, lon/lat vertices (EPSG:4326)
 ```
+
+**Storage choices.** The Daymet cube is float32 (Daymet's native type), chunked one day at a time (35 × 39 × 1) with deflate level 6, so reading one date reads one chunk and the file stays small (about 0.9 MB). −9999 is the fill value, so NoData is never confused with 0 mm. Station series are short 1-D datasets, one per variable, so each can be read alone. Tables (events, retrieval logs) are compound datasets.
 
 Dataset attributes record units (mm/day), NoData value (-9999, distinct from a recorded 0 mm), the CRS (Daymet LCC, WGS84, metres), the DOI, the retrieval method and time, and the time convention.
 

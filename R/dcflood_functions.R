@@ -305,3 +305,17 @@ dc_coverage <- function(h5, event_id = NULL, include_daymet = TRUE) {
               frac_with_value = days_in_cube / days_needed, min_footprint_frac_valid)
   bind_rows(stn, dmy) |> arrange(event_id, source, station)
 }
+
+# One row per source: variable, units, number of dates, first and last date.
+dc_sources <- function(h5) {
+  .dc_check(h5)
+  d  <- as.Date(.dc_chr(h5read(h5, "gridded/daymet/date")))
+  dm <- tibble(source = "daymet (gridded)", variable = "prcp", units = "mm/day",
+               n_dates = length(d), first_date = min(d), last_date = max(d))
+  st <- bind_rows(lapply(.dc_stations(h5), function(id) {
+    s <- .dc_station_full(h5, id) |> filter(!is.na(prcp_mm))
+    tibble(source = paste0("station ", id), variable = "PRCP", units = "mm/day",
+           n_dates = nrow(s), first_date = min(s$date), last_date = max(s$date))
+  }))
+  bind_rows(dm, st)
+}

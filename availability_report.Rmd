@@ -46,6 +46,8 @@ tibble(item = c("Dates needed", "Dates retrieved", "Needed dates missing from th
                  paste(dim(mask), collapse = " x "), sum(mask == 1), sum(mask == 0))) |> kable()
 ```
 
+Daymet is stored on its native grid: Lambert Conformal Conic (WGS84; +proj=lcc +lat_0=42.5 +lon_0=-100 +lat_1=25 +lat_2=60), 1 km cells, not reprojected or resampled. Requested area: lon −77.17 to −76.86, lat 38.74 to 39.045 (DC plus about 0.05° buffer). Units: mm/day. NoData: −9999 (cells outside the footprint), distinct from 0 mm.
+
 All dates were retrieved. Daymet uses a 365-day calendar, so 31 December is absent in leap years; need to check that no needed date falls on a leap-year 31 December:
 
 ```{r leap}
