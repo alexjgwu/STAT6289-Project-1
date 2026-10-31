@@ -2825,6 +2825,11 @@ footprint)</td>
 </tr>
 </tbody>
 </table>
+<p>Daymet is stored on its native grid: Lambert Conformal Conic (WGS84;
++proj=lcc +lat_0=42.5 +lon_0=-100 +lat_1=25 +lat_2=60), 1 km cells, not
+reprojected or resampled. Requested area: lon −77.17 to −76.86, lat
+38.74 to 39.045 (DC plus about 0.05° buffer). Units: mm/day. NoData:
+−9999 (cells outside the footprint), distinct from 0 mm.</p>
 <p>All dates were retrieved. Daymet uses a 365-day calendar, so 31
 December is absent in leap years; need to check that no needed date
 falls on a leap-year 31 December:</p>
@@ -3244,6 +3249,12 @@ stations.</p>
 </div>
 <div id="retrieval-history-including-what-failed" class="section level1">
 <h1>5. Retrieval history, including what failed</h1>
+<pre><code>## First attempt: ORNL THREDDS/NCSS through the `daymetr` package, one request per year.
+## 
+## 
+## |status |  n|
+## |:------|--:|
+## |failed | 28|</code></pre>
 <p>All 28 yearly requests through THREDDS failed, so the data were
 retrieved from NASA AppEEARS (product DAYMET.004, layer prcp, native
 projection, no resampling). The THREDDS log is kept as evidence of the
